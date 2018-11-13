@@ -9,10 +9,16 @@ class ToDo extends Component {
         this.state = {
             list: [
                 {
-                    'todo': "Wash and take away the Kurzhiy's cup from WC"
+                    'todo': "regerg",
+                    'title': "Wash and take away the Kurzhiy's cup from WC"
                 },
                 {
-                    'todo': 'Do some rollton and cigarettes'
+                    'todo': "fewfewf",
+                    'title': 'Do some rollton and cigarettes'
+                },
+                {
+                    'todo': "fefewf",
+                    'title': 'Finish internship'
                 }
             ],
             todo: ''
@@ -20,14 +26,15 @@ class ToDo extends Component {
     };
 
     createNewToDoItem = () => {
-      this.setState(({ list, todo }) => ({
+      this.setState(({ list, todo, title }) => ({
         list: [
             ...list,
           {
-            todo
+            todo, title
           }
         ],
-        todo: ''
+        todo: '',
+        title: ''
       }));
     };
 
@@ -41,11 +48,12 @@ class ToDo extends Component {
 
     handleInput = e => {
       this.setState({
-        todo: e.target.value
+        [e.target.id]: e.target.value
       });
     };
 
     render() {
+        const { list, todo, title } = this.state;
         return (
             <div className="ToDo">
                 <img className="Logo" src={Logo} alt="React logo"/>
@@ -54,17 +62,19 @@ class ToDo extends Component {
 
                     <div className="ToDo-Content">
 
-                        {this.state.list.map((item, key) => {
+                        {list.map((item, key) => {
                                 return <ToDoItem
                                             key={key}
-                                            item={item.todo}
+                                            todo={item.todo}
+                                            title={item.title}
                                         />
                           }
                         )}
                     </div>
 
                     <div>
-                       <input type="text" value={this.state.todo} onChange={this.handleInput} onKeyPress={this.handleKeyPress}/>
+                       <input id='todo' type="text" value={todo} onChange={this.handleInput} onKeyPress={this.handleKeyPress}/>
+                       <input id='title' type="text" value={title} onChange={this.handleInput} onKeyPress={this.handleKeyPress}/>
                        <button className="ToDo-Add" onClick={this.createNewToDoItem}>+</button>
                     </div>
 
