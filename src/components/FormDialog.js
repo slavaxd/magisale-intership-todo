@@ -6,15 +6,23 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { connect } from 'react-redux';
+import { updateToDoItem } from '../actions/todoActions';
 
 class FormDialog extends Component {
-  state = {
-    todo: this.props.todo,
-    title: this.props.title
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      todo: '',
+      title: '',
+      id: this.props.id,
+      open: false
+    };
+  }
 
   handleSave = () => {
-    this.props.updateData(this.state.todo, this.state.title, this.props.id);                                 this.setState({ open: false });
+    this.props.updateToDoItem(this.state.todo, this.state.title, this.state.id); 
+    this.setState({ open: false });
   };
 
   handleClickOpen = () => {
@@ -63,7 +71,7 @@ class FormDialog extends Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
+            <Button onClick={ this.handleClose } color="primary">
               Close
             </Button>
             <Button onClick={ this.handleSave } color="primary">
@@ -76,4 +84,20 @@ class FormDialog extends Component {
   }
 }
 
-export default FormDialog;
+const MapStateToProps = (state) => {
+  return {
+    list: state.list,
+    todo: state.todo,
+    title: state.title,
+  }
+};
+
+const MapDispatchToProps = (dispatch) => {
+  return {
+    updateToDoItem: (todo, title, id) => { 
+        dispatch(updateToDoItem(todo, title, id))
+    }
+  }
+}
+
+export default connect(MapStateToProps, MapDispatchToProps)(FormDialog);

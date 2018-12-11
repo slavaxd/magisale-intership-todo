@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import Button from "@material-ui/core/Button";
 import FormDialog from './FormDialog';
 import './ToDoItem.css';
-
+import { connect } from 'react-redux';
+import { deleteToDoItem } from '../actions/todoActions';
 
 
 class ToDoItem extends Component {
@@ -12,27 +13,36 @@ class ToDoItem extends Component {
         });
     };
 
+    handleClick = () => {
+      this.props.deleteToDoItem(this.props.id)
+    };
+
     render() {
+      console.log(this.props);
         return (
             <div className="ToDoItem">
 
               <div className="ToDoItem-Text">
-                <b>Title:</b>
-                {this.props.title}
+                <div>
+                  <b>Title: </b>
+                  {this.props.title}
+                </div>
                 <br/>
-                <b>To do:</b>
-                {this.props.todo}
+                <div>
+                  <b>To do: </b>
+                  {this.props.todo}
+                </div>
               </div>
 
-              <FormDialog
-                updateData={this.props.updateData}
-                title={this.props.title}
-                todo={this.props.todo}
+              <FormDialog 
+/*                title={this.props.title}
+                todo={this.props.todo}*/
                 id={this.props.id}
               />
 
               <Button variant="contained" color="secondary" className="ToDo-Delete"
-                      onClick={() => this.props.deleteToDoItem(this.props.id)}>
+/*                      onClick={() => this.props.deleteToDoItem(this.props.id)}>*/
+                     onClick={this.handleClick}>
                 <i className="fa fa-trash fa-2x"></i>
               </Button>
 
@@ -41,4 +51,10 @@ class ToDoItem extends Component {
     }
 }
 
-export default ToDoItem;
+const MapDispatchToProps = (dispatch) => {
+  return {
+    deleteToDoItem: (id) => {dispatch( deleteToDoItem(id) )}
+  }
+}
+
+export default connect(null, MapDispatchToProps)(ToDoItem);
